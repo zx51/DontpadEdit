@@ -1,2 +1,2 @@
-# dontpad.sh
-Exemplo de código em Shell Script para realização de requições POST para o site dontpad.sh
+# DontpadEdit
+Exemplos de códigos em Shell Script e Python para realização de requições POST para modificar conteúdo de páginas do site dontpad.com
