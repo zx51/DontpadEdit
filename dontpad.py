@@ -14,7 +14,7 @@ page = str(args.page)
 text = str(args.string)
 
 # Prepara requisição
-url = "https://api.dontpad.com/"   page
+url = "https://api.dontpad.com/" + page
 data = {
 	'text': text
 }
