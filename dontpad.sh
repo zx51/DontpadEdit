@@ -1,37 +1,45 @@
 #!/usr/bin/env bash
-##################### LEIA-ME ANTES! ####################
-# Script automatizado para modificar páginas do site dontpad.com
-# É apenas para fins didáticos, desenvolvido em shell script
-# Por favor, não destrua essa página.
 
-# Declarações
+# Variaveis e chaves
 _text=""
 _page=""
+EDIT=0
+VIEW=0
 
 MENSAGEM_USO="
-Uso:	$(basename "$0") [OPÇÕES]
+Uso:	$(basename "$0") -e/-v -p 'pagina' -s 'texto'
 
 OPÇÕES:
 	-h, --help	Mostra esta tela de ajuda e sai
+	-e, --edit	Edita a página, juntamente com o -p e -s
+	-v, --view	Visualiza o texto da página
 	-p, --page	Especifica a página para edição
 	-s, --string	Escreve a string no site
 "
 
-# Validação
+# Validação de parametros
 function isValid() {
-	if test -z "$1";then
+	if test -z "$1"
+	then
 		echo "Faltou informação em algum argumento"
 		exit 1
 	fi
 }
 
-# set params
 while test -n "$1"
 do
 	case "$1" in
 		-h | --help)
 			echo "$MENSAGEM_USO"
 			exit 0
+		;;
+
+		-e | --edit)
+			EDIT=1
+		;;
+
+		-v | --view)
+			VIEW=1
 		;;
 
 		-s | --string)
@@ -54,16 +62,10 @@ do
 	shift
 done
 
-# Testar se variaveis foram preenchidas
-if test "$_text" = ""; then
-	echo "Não foi definido um texto para a página"
-	echo "$MENSAGEM_USO"
-	exit 1
-fi
-
-if test "$_page" = "";then
-	echo "Não foi definido um título para a página"
-	echo "$MENSAGEM_USO"
+# Validação da página
+if [ "$_page" = "" ]
+then
+	echo "É necessário informar uma página"
 	exit 1
 fi
 
@@ -74,4 +76,13 @@ function dontpadEdit() {
 	exit 0
 }
 
-dontpadEdit
+# Função para trazer o conteúdo da página
+function dontpadView() {
+	curl -s https://api.dontpad.com/$_page.body.json?lastModified=0 | jq '.body'
+	exit 0
+}
+
+# Verifica função a ser executada
+test $EDIT -eq 1 && dontpadEdit
+test $VIEW -eq 1 && dontpadView
+echo "Algo deu errado, use a opção -h"
