@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# Com esse script é possível alterar ou visualizar o conteúdo de páginas do site https://dontpad.com/ 
+# Para mudar o conteúdo: python ./dontpad.py [-a edit] -p "nome_da_pagina" -s "texto"  
+# Para obter o conteúdo: python ./dontpad.py -a view -p "nome_da_pagina"
+
 # Importa bibliotecas
 import requests
 import argparse
